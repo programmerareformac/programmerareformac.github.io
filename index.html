@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burgarboost: Skapa din drömhamburgare</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: black;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #1a1a2e;
+}
+
+#snowball {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    z-index: 2;
+}
+
+        #main-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin-left: 150px; /* Space for button panel */
+        }
+        #button-panel {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 150px;
+            height: 100%;
+            background-color: rgba(50, 50, 50, 0.8);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .panel-button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .panel-button:hover {
+            background-color: #45a049;
+        }
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 150px; /* Align with main content */
+            right: 0;
+            height: 100%;
+            z-index: 1;
+        }
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: blink 1s infinite alternate;
+        }
+        @keyframes blink {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        #moon {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            box-shadow: inset -25px 0 #d0d0d0;
+            z-index: 2;
+        }
+        #spaceship {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background-color: #808080;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 3;
+        }
+        #scroller-container {
+            position: fixed;
+            top: 50%;
+            left: 150px; /* Align with main content */
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 4;
+            overflow: hidden;
+        }
+        #scroller {
+            font-size: 24px;
+            font-weight: bold;
+            white-space: nowrap;
+            position: relative;
+            color: white;
+        }
+                body {
+            background-image: url('1111.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            transition: background-image 0.5s ease; /* Smooth transition */
+        }
+    </style>
+</head>
+<script>
+    // Array of background images
+    const backgroundImages = ['1111.jpg', '1111w.jpg'];
+    let currentIndex = 0;
+
+    // Function to change background
+    function changeBackground() {
+        // Update index to the next image
+        currentIndex = (currentIndex + 1) % backgroundImages.length;
+        // Change the background image
+        document.body.style.backgroundImage = `url('${backgroundImages[currentIndex]}')`;
+    }
+
+    // Change background every 5 seconds
+    setInterval(changeBackground, 5000); // 5000 ms = 5 seconds
+    moveSnowball();
+</script>    
+<body style="background-image: url('1111.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 100vh; margin: 0;">
+    <div id="button-panel">
+        <button class="panel-button">Sizzle Start: Grilla igång testet!</button>
+        <button class="panel-button">Bun Adventure: Bygg din burgare</button>
+        <button class="panel-button">Cheese Challenge: Ost eller inte?</button>
+        <button class="panel-button">Patty Picker: Välj din favoritburgare</button>
+        <button class="panel-button">Sauce Showdown: Vilken dressing dominerar?</button>
+    </div>
+    <div id="main-content">
+        <div id="stars"></div>
+        <div id="snowball"></div>
+        <div id="spaceship"></div>
+        <div id="scroller-container">
+            <div id="scroller">Burgarboost: Skapa din ultimata drömhamburgare och avslöja vilken smakstil som passar dig bäst – är du en klassiker eller en äventyrslysten smakjägare?</div>
+        </div>
+    </div>
+    <audio id="cat-meow" src="cat-meow.mp3" preload="auto"></audio>
+<script>
+  function playMeow() {
+    const meowSound = document.getElementById('cat-meow');
+    meowSound.play();
+  }
+</script>
+    <script>
+        const scroller = document.getElementById('scroller');
+        const container = document.getElementById('scroller-container');
+        const starsContainer = document.getElementById('stars');
+        const moon = document.getElementById('moon');
+        const spaceship = document.getElementById('spaceship');
+        let horizontalPosition = container.offsetWidth;
+        let verticalPosition = 0;
+        let verticalDirection = 1;
+        const horizontalSpeed = 2;
+        const verticalSpeed = 1;
+        const bounceLimit = 20;
+        const colorChangeInterval = 500;
+
+        function getRandomColor() {
+            return `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+        }
+
+        function changeColor() {
+            scroller.style.color = getRandomColor();
+        }
+
+        function animate() {
+            horizontalPosition -= horizontalSpeed;
+            verticalPosition += verticalSpeed * verticalDirection;
+            
+            if (verticalPosition >= bounceLimit || verticalPosition <= -bounceLimit) {
+                verticalDirection *= -1;
+            }
+            
+            if (horizontalPosition < -scroller.offsetWidth) {
+                horizontalPosition = container.offsetWidth;
+            }
+            
+            scroller.style.transform = `translate(${horizontalPosition}px, ${verticalPosition}px)`;
+            requestAnimationFrame(animate);
+        }
+
+        function createStars(count) {
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 3 + 5}px`;
+                star.style.height = star.style.width;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function moveStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                let x = parseFloat(star.style.left);
+                let y = parseFloat(star.style.top);
+                
+                x += (Math.random() - 0.5) * 0.1;
+                y += (Math.random() - 0.5) * 0.1;
+                
+                if (x < 0) x = 100;
+                if (x > 100) x = 0;
+                if (y < 0) y = 100;
+                if (y > 100) y = 0;
+                
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+            });
+            requestAnimationFrame(moveStars);
+        }
+
+        function moveMoon() {
+    let angle = 0;
+    const amplitudeX = 200; // Horizontal range for the arc
+    const amplitudeY = 100; // Vertical range for the arc
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    function updateSnowballPosition() {
+        // Update x and y positions in a gentle arc
+        const x = centerX + amplitudeX * Math.cos(angle);
+        const y = centerY + amplitudeY * Math.sin(angle * 2); // Adjust frequency for smoother arc
+
+        // Update the snowball's position on the screen
+        snowball.style.left = `${x - 25}px`;
+        snowball.style.top = `${y - 25}px`;
+
+        // Adjust the angle to create the animation effect
+        angle += 0.02;
+        requestAnimationFrame(updateSnowballPosition);
+    }
+
+    updateSnowballPosition();
+        }
+
+        function moveSpaceship() {
+           let angle = 0;
+    const amplitudeX = 400; // Increase horizontal range for a wider arc
+    const amplitudeY = 150; // Adjust vertical range to maintain a balanced arc
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    function updateSnowballPosition() {
+        // Calculate x and y positions for a wider arc
+        const x = centerX + amplitudeX * Math.cos(angle);
+        const y = centerY + amplitudeY * Math.sin(angle * 1.5); // Adjust frequency to elongate the arc vertically
+
+        // Set the position of the snowball
+        snowball.style.left = `${x - 25}px`;
+        snowball.style.top = `${y - 25}px`;
+
+        // Increment angle to control speed and smoothness of the animation
+        angle += 0.01; // Slower increment for smoother, wider movement
+        requestAnimationFrame(updateSnowballPosition);
+    }
+
+    updateSnowballPosition();
+        }
+
+        // Add button click handlers
+        document.querySelectorAll('.panel-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Play the sound
+                          const meowSound = document.getElementById('cat-meow');
+                          meowSound.currentTime = 0; // Reset to start in case it's still playing
+                          meowSound.play();
+                alert(`Du klickade på ${this.textContent}`);
+            });
+        });
+
+        createStars(100);
+        animate();
+        moveStars();
+        moveMoon();
+        moveSpaceship();
+        setInterval(changeColor, colorChangeInterval);
+    </script>
+</body>
+</html>
